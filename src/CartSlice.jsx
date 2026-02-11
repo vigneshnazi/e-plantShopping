@@ -6,14 +6,45 @@ export const CartSlice = createSlice({
     items: [], // Initialize items as an empty array
   },
   reducers: {
-    addItem: (state, action) => {
-    
-    },
-    removeItem: (state, action) => {
-    },
-    updateQuantity: (state, action) => {
 
-    
+    // ✅ ADD ITEM
+    addItem: (state, action) => {
+      const plant = action.payload;
+
+      const existingItem = state.items.find(
+        (item) => item.name === plant.name
+      );
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        state.items.push({
+          ...plant,
+          quantity: 1
+        });
+      }
+    },
+
+    // ✅ REMOVE ITEM
+    removeItem: (state, action) => {
+      const plantName = action.payload;
+
+      state.items = state.items.filter(
+        (item) => item.name !== plantName
+      );
+    },
+
+    // ✅ UPDATE QUANTITY
+    updateQuantity: (state, action) => {
+      const { name, amount } = action.payload;
+
+      const item = state.items.find(
+        (item) => item.name === name
+      );
+
+      if (item) {
+        item.quantity = amount;
+      }
     },
   },
 });
